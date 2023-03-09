@@ -1,0 +1,7 @@
+.idea/
+.bsp/
+target/
+api_key.txt
+profile.txt
+query.json
+*.wav
