@@ -3,7 +3,7 @@ package com.github.kmizu.gpt_voice_chat
 import javax.sound.sampled._
 
 object SoundRecorder {
-  def record(durationInSeconds: Int, outputFile: String): Unit = {
+  def record(durationInSeconds: Int, outputFile: String)(callbackInSecond: => Unit): Unit = {
     val audioFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 44100, 16, 2, 4, 44100, false)
     val targetInfo = new DataLine.Info(classOf[TargetDataLine], audioFormat)
 
@@ -22,7 +22,7 @@ object SoundRecorder {
     new Thread({()=>
       for (i <- 0 until durationInSeconds) {
         Thread.sleep(1000)
-        print(".")
+        callbackInSecond
       }
       println()
       targetLine.stop()

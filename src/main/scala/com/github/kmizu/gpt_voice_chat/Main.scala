@@ -29,7 +29,9 @@ object Main {
       sys.exit(-1)
     }
     while(true) {
-      SoundRecorder.record(5, "input.wav")
+      SoundRecorder.record(5, "input.wav") {
+        print(".")
+      }
       val prompt = Whisper.transcribeFile("input.wav")
       println(s"私> ${prompt}")
       val answer = bot.chat(prompt)

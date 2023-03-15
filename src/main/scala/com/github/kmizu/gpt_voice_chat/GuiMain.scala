@@ -4,9 +4,10 @@ import java.io.FileInputStream
 import java.nio.file.{Files, Paths}
 import javax.swing._
 import scala.sys.process.stderr
+import javax.swing.UIManager
 
 object GuiMain {
-  private val title = "ChatGPT Voice Chat"
+  private val title = "GPT Voice Chat"
   private var categoryListBox: JList[String] = _
   private var targetListBox: JList[String] = _
   private var descriptionTextArea: JTextArea = _
@@ -15,7 +16,7 @@ object GuiMain {
   private var outputTextArea: JTextArea = _
 
   private def configureFrame(frame: JFrame, title: String): Unit = {
-    frame.setSize(800, 600)
+    frame.setSize(1024, 768)
     frame.setTitle(title)
     frame.getContentPane.setLayout(new BoxLayout(frame.getContentPane, BoxLayout.Y_AXIS))
 
@@ -32,12 +33,13 @@ object GuiMain {
     frame.setVisible(true)
   }
   def main(args: Array[String]): Unit = {
+    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName)
     val token = Files.readString(Paths.get("api_key.txt")).strip()
     val bot = new ChatBot(token = token, systemSetting = Some(
       Files.readString(Paths.get("profile.txt")).strip()
     ))
     val talker = if (args.length == 0) {
-      new VOICEVOXTalker()
+      new VOICEPEAKTalker()
     } else if (args(0) == "voicepeak") {
       new VOICEPEAKTalker()
     } else if (args(0) == "voicevox") {
@@ -53,9 +55,16 @@ object GuiMain {
         new Thread(() => {
           while(true) {
             SwingUtilities.invokeAndWait { () => {
-              promptTextArea.setText("録音中……")
+              promptTextArea.setText("録音中")
             }}
-            SoundRecorder.record(5, "input.wav")
+            SoundRecorder.record(5, "input.wav") {
+              SwingUtilities.invokeAndWait { () => {
+                promptTextArea.append(".")
+              }}
+            }
+            SwingUtilities.invokeAndWait { () => {
+              promptTextArea.setText("録音完了")
+            }}
             val prompt = Whisper.transcribeFile("input.wav")
             SwingUtilities.invokeAndWait { () => {
               outputTextArea.append("私: " + prompt + "\n")

@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class AskGptForm extends JFrame {
+public class ChatForm extends JFrame {
     private JPanel panel;
     private JComboBox categoryBox;
     private JComboBox targetBox;
@@ -18,7 +18,7 @@ public class AskGptForm extends JFrame {
     private JLabel answerLabel;
     private JButton generateTextButton;
 
-    public AskGptForm() {
+    public ChatForm() {
         setContentPane(panel);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1024, 768);
@@ -42,7 +42,7 @@ public class AskGptForm extends JFrame {
     }
 
     public static void main(String[] args) throws IOException {
-        var form = new AskGptForm();
+        var form = new ChatForm();
         form.run(args);
     }
 }

@@ -60,7 +60,8 @@ class VOICEVOXTalker(val speakerId: Int = 0) extends Talker {
   override protected def generateVoice(answer: String, output: String): Boolean = {
     val encodedAnswer = URLEncoder.encode(answer, "UTF-8")
     val os = System.getProperty("os.name").toLowerCase()
-    val succeed: Boolean = if(os.contains("windows")) {
+    val osVersion = System.getProperty("os.version").toLowerCase()
+    val succeed: Boolean = if(os.contains("windows") || osVersion.contains("wsl")) {
       generateVoiceOnWindows(encodedAnswer, output)
     } else if (os.contains("linux")) {
       generateVoiceOnLinux(encodedAnswer, output)
