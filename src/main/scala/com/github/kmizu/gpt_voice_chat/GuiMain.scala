@@ -1,7 +1,5 @@
 package com.github.kmizu.gpt_voice_chat
 
-import org.yaml.snakeyaml.Yaml
-
 import java.io.FileInputStream
 import java.nio.file.{Files, Paths}
 import javax.swing._

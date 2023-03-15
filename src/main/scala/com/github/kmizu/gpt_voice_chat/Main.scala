@@ -2,7 +2,6 @@ package com.github.kmizu.gpt_voice_chat
 
 import java.nio.file.{Files, Paths}
 import java.io.{File, FileInputStream}
-import org.yaml.snakeyaml.Yaml
 
 import scala.sys.process._
 import javax.sound.sampled.AudioSystem
