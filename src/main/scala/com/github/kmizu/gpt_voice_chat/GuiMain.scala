@@ -35,7 +35,7 @@ object GuiMain {
   def main(args: Array[String]): Unit = {
     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName)
     val token = Files.readString(Paths.get("api_key.txt")).strip()
-    val bot = new ChatBot(token = token, systemSetting = Some(
+    val bot = new ChatBot(token = token, system = Some(
       Files.readString(Paths.get("profile.txt")).strip()
     ))
     val talker = if (args.length == 0) {
@@ -70,11 +70,11 @@ object GuiMain {
               outputTextArea.append("私: " + prompt + "\n")
               promptTextArea.setText("返答待ち中……")
             }}
-            val answer = bot.chat(prompt)
+            val (answer, emotion) = bot.chat(prompt)
             SwingUtilities.invokeAndWait { () => {
               outputTextArea.append("AI： " + answer + "\n")
             }}
-            talker.talk(answer)
+            talker.talk(answer, (emotion))
           }
         }).start()
       }

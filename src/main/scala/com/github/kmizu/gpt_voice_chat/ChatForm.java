@@ -27,22 +27,4 @@ public class ChatForm extends JFrame {
     private void createUIComponents() {
         // TODO: place custom component creation code here
     }
-
-    public void run(String[] args) throws IOException  {
-        var token = Files.readString(Paths.get("api_key.txt")).strip();
-        var generator = new ChatBot(token, Option.empty());
-
-        generateTextButton.addActionListener((event) -> {
-            var prompt = promptArea.getText();
-            var answer = generator.chat(prompt);
-            answerArea.setText(answer);
-        });
-
-        setVisible(true);
-    }
-
-    public static void main(String[] args) throws IOException {
-        var form = new ChatForm();
-        form.run(args);
-    }
 }

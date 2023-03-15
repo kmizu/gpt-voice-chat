@@ -14,7 +14,7 @@ object Main {
   def main(args: Array[String]): Unit = {
     //execute process
     val token = Files.readString(Paths.get("api_key.txt")).strip()
-    val bot = new ChatBot(token = token, systemSetting = Some(
+    val bot = new ChatBot(token = token, system = Some(
       Files.readString(Paths.get("profile.txt")).strip()
     ))
     println("チャット開始です")
@@ -34,9 +34,9 @@ object Main {
       }
       val prompt = Whisper.transcribeFile("input.wav")
       println(s"私> ${prompt}")
-      val answer = bot.chat(prompt)
+      val (answer, emotion) = bot.chat(prompt)
       println("あい> " + answer)
-      talker.talk(answer)
+      talker.talk(answer, emotion)
     }
   }
 }

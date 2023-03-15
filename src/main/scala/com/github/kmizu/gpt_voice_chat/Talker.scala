@@ -1,6 +1,6 @@
 package com.github.kmizu.gpt_voice_chat
 
-import play.api.libs.json.{JsNumber, JsObject, JsString, Json}
+import play.api.libs.json.{JsNumber, JsObject, JsString, JsValue, Json}
 
 import java.io.File
 import javax.sound.sampled.DataLine.Info
@@ -9,8 +9,8 @@ import scala.sys.process.Process
 
 trait Talker {
   val TemporaryAudioFille = "voice.wav"
-  def talk(voice: String): Boolean = {
-    val generated = generateVoice(voice, TemporaryAudioFille)
+  def talk(voice: String, emotion: Option[JsValue]): Boolean = {
+    val generated = generateVoice(voice, emotion, TemporaryAudioFille)
     if(!generated) return false
     playWaveFile(TemporaryAudioFille)
     true
@@ -41,5 +41,5 @@ trait Talker {
     audioIn.close()
   }
 
-  protected def generateVoice(answer: String, output: String): Boolean
+  protected def generateVoice(answer: String, emotion: Option[JsValue], output: String): Boolean
 }

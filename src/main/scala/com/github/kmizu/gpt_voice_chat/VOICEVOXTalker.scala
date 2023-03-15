@@ -1,5 +1,7 @@
 package com.github.kmizu.gpt_voice_chat
 
+import play.api.libs.json.JsValue
+
 import java.io.File
 import java.net.URLEncoder
 import scala.sys.process.{Process, stringSeqToProcess}
@@ -57,7 +59,7 @@ class VOICEVOXTalker(val speakerId: Int = 0) extends Talker {
     succeed
   }
 
-  override protected def generateVoice(answer: String, output: String): Boolean = {
+  override protected def generateVoice(answer: String, emotion: Option[JsValue], output: String): Boolean = {
     val encodedAnswer = URLEncoder.encode(answer, "UTF-8")
     val os = System.getProperty("os.name").toLowerCase()
     val osVersion = System.getProperty("os.version").toLowerCase()

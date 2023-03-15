@@ -1,9 +1,16 @@
 package com.github.kmizu.gpt_voice_chat
 
+import play.api.libs.json.{JsNumber, JsValue}
+
 import scala.sys.process.Process
 
 class VOICEPEAKTalker(val narrator: String = "Asumi Shuo") extends Talker {
-  def generateVoiceOnWindows(answer: String, output: String): Boolean = {
+  def generateVoiceOnWindows(answer: String, emotion: Option[JsValue], output: String): Boolean = {
+    val happy = emotion.map{e => (e \ "happy").as[JsNumber].value.toInt}
+    val fun = emotion.map{e => (e \ "fun").as[JsNumber].value.toInt}
+    val angry = emotion.map{e => (e \ "angry").as[JsNumber].value.toInt}
+    val sad = emotion.map{e => (e \ "sad").as[JsNumber].value.toInt}
+    val cry = emotion.map{e => (e \ "cry").as[JsNumber].value.toInt}
     Process("voicepeak.exe", Seq("-n", narrator, "-s", answer, "-e", s"happy=300", "--pitch", "100", "-o", output)).! == 0
   }
 
@@ -15,11 +22,11 @@ class VOICEPEAKTalker(val narrator: String = "Asumi Shuo") extends Talker {
     Process("voicepeak", Seq("-n", narrator, "-s", answer, "-e", s"happy=300", "--pitch", "100", "-o", output)).! == 0
   }
 
-  override protected def generateVoice(answer: String, output: String): Boolean = {
+  override protected def generateVoice(answer: String, emotion: Option[JsValue], output: String): Boolean = {
     val os = System.getProperty("os.name").toLowerCase()
     val osVersion = System.getProperty("os.version").toLowerCase()
     val succeed: Boolean = if (os.contains("windows") || (os.contains("linux") && osVersion.contains("wsl"))) {
-      generateVoiceOnWindows(answer, output)
+      generateVoiceOnWindows(answer, emotion, output)
     } else if (os.contains("linux")) {
       generateVoiceOnLinux(answer, output)
     } else if (os.contains("mac")) {
