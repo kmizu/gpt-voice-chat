@@ -12,8 +12,8 @@ class ChatBot(val token: String, val system: Option[String] = None) {
 
   private def generateReply(messages: List[(String, String)]): String = {
     val request = ChatCompletionRequest.builder()
-      .model("gpt-3.5-turbo")
-      .topP(0.5)
+      .model("gpt-4")
+      .topP(0.1)
       .messages(asJava(
         messages.map { case (user, message) => new ChatMessage(user, message) },
       )).build()
@@ -22,13 +22,8 @@ class ChatBot(val token: String, val system: Option[String] = None) {
 
   system.foreach{sys =>
     logs.append("system" -> sys)
-    logs.append("assistant" -> "了解です")
+    logs.append("assistant" -> "わかったよ")
   }
-  logs.append("system" ->
-    """after reply, return the emotion value in the JSON:
-      | { "happy":0-100, "fun:0-100, ""angry":0-100, "sad":0-100, "cry":0-100 }""".stripMargin
-  )
-  logs.append("assistant" -> "了解です")
   def chat(prompt: String): (String, Option[JsValue]) = {
     logs.append("user" -> prompt)
     val answer = generateReply(logs.toList)

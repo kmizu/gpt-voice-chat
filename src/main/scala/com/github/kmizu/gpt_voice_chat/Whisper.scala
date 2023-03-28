@@ -21,6 +21,7 @@ object Whisper {
       .header("Content-Type", "multipart/form-data")
       .header("Authorization", s"Bearer $apiKey")
       .param("model", "whisper-1")
+      .param("language", "ja")
       .postMulti(
         MultiPart("file", filePath, "audio/wav", bytes)
       )
